@@ -6,6 +6,7 @@
         <div>
             <div v-for="(item, index) in testList" :key="index" @click="move(item)">{{ item }} 今日點擊次數:{{num}}次</div>
         </div>
+        <span><a-button @click="logout()">登出</a-button></span>
     </div>
 </template>
 
@@ -32,6 +33,11 @@ export default {
         move(item){
             const vm = this
             vm.$router.push(`/testList/${item}`)
+        },
+        logout(){
+            const vm = this
+            localStorage.removeItem('member')
+            vm.$router.push('/login')
         }
     },
 }
