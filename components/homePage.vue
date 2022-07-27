@@ -1,17 +1,21 @@
 <template>
-    <div>
+    <div class="flex flex-col mt-2">
         <div class="test-title">
             <h1>陳呈的測試天地</h1>
         </div>
-        <div>
-            <div v-for="(item, index) in testList" :key="index" @click="move(item)">{{ item }} 今日點擊次數:{{num}}次</div>
+        <div class="mb-2">
+            <div v-for="(item, index) in testList" :key="index" @click="move(item)">
+                {{ item.name }}-今日點擊次數:{{item.countNum}}次
+            </div>
         </div>
-        <span><a-button @click="logout()">登出</a-button></span>
+        <div class="self-end">
+            <a-button type="primary" @click="logout()">登出</a-button>
+        </div>
     </div>
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
@@ -22,21 +26,20 @@ export default {
             const vm = this
             return vm.$store.state.homeList
         },
-        ...mapState({
-            num: 'num'
-        }),
-        ...mapMutations({
-            countNum: 'countNum',
+        ...mapGetters({
+            num: 'getList'
         })
     },
     methods: {
         move(item){
             const vm = this
-            vm.$router.push(`/testList/${item}`)
+            this.$store.dispatch('countNum',item)
+            vm.$router.push(`/testList/${item.name}`)
         },
         logout(){
             const vm = this
-            localStorage.removeItem('member')
+            sessionStorage.removeItem('member')
+            sessionStorage.removeItem('checkLoginStatus')
             vm.$router.push('/login')
         }
     },

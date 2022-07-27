@@ -1,7 +1,7 @@
 export default function ({ route, store, redirect }) {
-    const list = localStorage.getItem('member')
-    const check = store.state.check
-    console.log(list)
-    console.log(check)
-    // return list && check ? true : redirect('/checklogin')
+    const list = JSON.parse(sessionStorage.getItem('member'))
+    const check = sessionStorage.getItem('checkLoginStatus')
+    if((route.fullPath !== '/checklogin') && (!list || !check)){
+      return redirect('/checklogin')
+    }
   }

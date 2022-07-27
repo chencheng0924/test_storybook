@@ -1,16 +1,15 @@
 <template>
     <div class="login-page">
-        <h2>芝麻開門</h2>
-        <h5>請先登入</h5>
-        <div>
-            <span>帳號</span>
-            <span><input v-model="account" type="text"></span>
+        <h2 class="mt-2">芝麻開門</h2>
+        <div class="flex items-center mb-3">
+            <span class="mr-2">帳號</span>
+            <span><a-input v-model="account"></a-input></span>
         </div>
-        <div>
-            <span>密碼</span>
-            <span><input v-model="password" type="text"></span>
+        <div class="flex items-center">
+            <span class="mr-2">密碼</span>
+            <span><a-input v-model="password" type="password"></a-input></span>
         </div>
-        <div>
+        <div class="mt-2">
             <a-button type="primary" @click="login()">登入</a-button>
             <a-button type="dashed" @click="clear()">清除</a-button>
         </div>
@@ -29,10 +28,12 @@ export default{
     methods:{
         login(){
             const vm = this
-            vm.list.push(
-                vm.account,vm.password
-            )
-            localStorage.setItem('member', vm.list)
+            vm.list = [{
+                account:vm.account,
+                password:vm.password
+            }]
+            sessionStorage.setItem('member', JSON.stringify(vm.list))
+            vm.$store.dispatch('login/checkLoginStatus', vm.list)
             vm.$router.push('/')
         },
         clear(){
